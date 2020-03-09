@@ -1,0 +1,14 @@
+html, body{
+    margin: 0;
+    height: 100%;
+    margin-top: 0px;
+}
+
+#titleArea {
+    height: 20%;
+}
+
+#selectionArea {
+    width: 70%;
+    height: 30%;
+}
