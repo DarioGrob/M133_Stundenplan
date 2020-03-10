@@ -19,3 +19,12 @@ html, body{
 #content {
     height: 80%;
 }
+
+#tableOutput th, td {
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+#tableOutput td {
+    height: 1px;
+}
