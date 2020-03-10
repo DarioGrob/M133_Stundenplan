@@ -9,6 +9,13 @@ html, body{
 }
 
 #selectionArea {
-    width: 70%;
-    height: 30%;
+    width: 25%;
+}
+
+#displayResultArea {
+	width: 75%;
+}
+
+#content {
+    height: 80%;
 }

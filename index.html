@@ -7,18 +7,32 @@
     </head>
     <body>
         <div class="bg-secondary w-100 pt-3" id="titleArea">
-            <p class="display-4 text-light text-center">Stundenplan GIBM</p>
+            <p class="display-2 text-light text-center">Stundenplan GIBM</p>
         </div>
-        <div class="ml-auto mr-auto mt-5" id="selectionArea">
 
-            <p class="mb-1">Berufsgurppe:</p>
-
-            <select class="custom-select" id="jobDropdown">
+        <div class="d-flex flex-row w-100" id="content">
             
-            </select>
+            <div class="ml-5 mt-5 mr-3 mr-0" id="selectionArea">
 
-        </div>
-        <div class="" id="displayResultArea">
+                <p class="mb-1">Berufsgurppe:</p>
+
+                <select class="custom-select" id="jobDropdown">
+                    <option value="select">Select...</option>
+                </select>
+                
+                <p class="mt-5 mb-1">Klassen:</p>
+                
+                <select class="custom-select" id="classDropdown">
+                    <option value="select">Select...</option>
+                </select>
+                
+            </div>
+
+            <div class="float-right" id="displayResultArea">
+                
+
+                
+            </div>
 
         </div>
         <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
