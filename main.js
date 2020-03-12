@@ -1,5 +1,5 @@
 $(function(){
-	var tableTime = ['07:15 - 08:00', '08:05 - 08:50', '08:55 - 09:40', '10:00 - 10:45', '10:50 - 11:35', '12:45 - 13:30', '13:35 - 14:20', '14:20 - 14:40', '14:40 - 15:25', '15:30 - 16:20', '16:20 - 17:05'];  
+	var tableTime = ['07:15 - 08:00', '08:05 - 08:50', '08:55 - 09:40', '10:00 - 10:45', '10:50 - 11:35', '12:45 - 13:30', '13:35 - 14:20', '14:40 - 15:25', '15:30 - 16:15', '16:20 - 17:05'];  
 	var weekdays = ['Montag', 'Dienstag', 'Mitwoch', 'Donnerstag', 'Freitag'];
 	var date = new Date();
 
@@ -28,46 +28,75 @@ $(function(){
 	});
 	
 	$("#classDropdown").change(function(){
+		displayTable();
+	
+	});
+	
+	$("#kw_left").click(function (){
+		date.setDate(date.getDate() - 1 * 7); 
+		displayTable();
+	});
+	
+	$("#kw_right").click(function (){
+		date.setDate(date.getDate() + 1 * 7);
+		displayTable();
+	});
+	
+	function displayTable(){
+		$("#tableOutput").empty();
 		var jsonData;
-		$.getJSON("http://sandbox.gibm.ch/tafel.php?klasse_id=" + $("#classDropdown :selected").val() + "&woche=" + date.getWeek() + "-" + date.getFullYear() , function(result){
+		var week = date.getWeek() + "-" + date.getFullYear();
+		$.getJSON("http://sandbox.gibm.ch/tafel.php?klasse_id=" + $("#classDropdown :selected").val() + "&woche=" + week , function(result){
 			jsonData = result;
 		})
 		.fail(function(){
 			alert("Connection to server faild!!!");
 		})
 		.done(function(){
+			var indexOfTableTimeBisLesson;
+			var indexOfTableTimeVonLesson;
+			var indexOfWeekdayLesson;
+			var lessons = [];
 			for(i = 0; i <= tableTime.length; i ++){
-				console.group();
 				for(j = 0; j <= weekdays.length; j++){
 					if(i == 0 && j == 0){
-						$("#tableOutput").append("<tr><td></td></tr>");
+						$("#tableOutput").append("<tr><td class='bg-light'></td></tr>");
 					}else if(i == 0){
-						$("#tableOutput tr").append("<td>" + weekdays[j - 1] + "</td>");
+						$("#tableOutput tr").append("<td class='bg-light text-secondary font-weight-bold'>" + weekdays[j - 1] + "</td>");
 					}else if(j == 0){
-						$("#tableOutput").append("<tr><td>" + tableTime[i - 1] + "</td></tr>");
+						$("#tableOutput").append("<tr><td class='bg-light text-secondary font-weight-bold'>" + tableTime[i - 1] + "</td></tr>");
 					}else{
 						var lesson = jsonData.find(jsonObject => jsonObject.tafel_wochentag == j && jsonObject.tafel_von == tableTime[i - 1].substr(0,5) + ":00") 
 						if(lesson){
-							var test = i + 1;
-							var indexOfTableTime = tableTime.findIndex(s => s.includes(lesson.tafel_bis.substr(0, 5)));
-							console.log(indexOfTableTime);
-							$("#tableOutput tr:nth-child(" + test + ")").append("<td class='bg-danger'></td>");
+							indexOfTableTimeVonLesson = tableTime.findIndex(s => s.includes(lesson.tafel_von.substr(0, 5)));
+							indexOfTableTimeBisLesson = tableTime.findIndex(s => s.includes(lesson.tafel_bis.substr(0, 5)));
+							indexOfWeekdayLesson = lesson.tafel_wochentag;
+							
+							const lessonInfo = {
+								wochentag: indexOfWeekdayLesson,
+								vonIndex: indexOfTableTimeVonLesson,
+								bisIndex: indexOfTableTimeBisLesson
+							};
+							
+							lessons.push(lessonInfo);
+							
+							var rowspan = indexOfTableTimeBisLesson - indexOfTableTimeVonLesson + 1;
+							var trRow1 = i + 1;
+							$("#tableOutput tr:nth-child(" + trRow1 + ")").append("<td rowspan='" + rowspan + "'><div class='lesson'>" + lesson.tafel_longfach + "</br>" + lesson.tafel_raum + "</br>" + lesson.tafel_lehrer + "</div></td>");
 						}else{
-							var trRow = i + 1;
-							$("#tableOutput tr:nth-child(" + trRow + ")").append("<td class='bg-success'></td>");
+							if(!lessons.find(a => a.wochentag == j && a.vonIndex + 1 <= i && a.bisIndex + 1 >= i)){
+								var trRow2 = i + 1;
+								$("#tableOutput tr:nth-child(" + trRow2 + ")").append("<td></td>");
+							}
 						}
 					}
 				}
-				console.groupEnd();
 			}
+			$("#testi").html(week);		
+			$("#calenderWeekTitleHidden").css('visibility', 'visible');
+			$("#calenderWeekSelectionHidden").css('visibility', 'visible');
 		});
-
-	});
-
-
-
-
-
+	}
 
 	Date.prototype.getWeek = function() {
 		var onejan = new Date(this.getFullYear(),0,1);

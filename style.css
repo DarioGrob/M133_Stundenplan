@@ -23,8 +23,20 @@ html, body{
 #tableOutput td {
     padding-top: 3px;
     padding-bottom: 3px;
+	height: 1px;
 }
 
-#tableOutput td {
-    height: 1px;
+.lesson {
+	height: 100%;
+	border-radius: 15px;
+	padding: 5px;
+	background-color: #FD8888;
+}
+
+#calenderWeekTitleHidden {
+	visibility: hidden;
+}
+
+#calenderWeekSelectionHidden {
+	visibility: hidden;
 }

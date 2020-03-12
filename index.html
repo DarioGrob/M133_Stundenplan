@@ -2,7 +2,10 @@
 <html>
     <head>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">            
-        <link rel="stylesheet" href="style.css">
+        
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css">
+		
+		<link rel="stylesheet" href="style.css">
         <title>GIBM Stundenplan</title>
     </head>
     <body>
@@ -25,6 +28,18 @@
                 <select class="custom-select" id="classDropdown">
                     <option value="select">Select...</option>
                 </select>
+				
+				<p class='mt-5 mb-1' id="calenderWeekTitleHidden">Kalenderwoche:</p>
+				
+				<div class='d-flex flex-row ml-auto mr-auto' id="calenderWeekSelectionHidden">
+					<button type='button' class='btn btn-default border' id="kw_left">
+						<i class='fas fa-chevron-left'></i>
+					</button>
+					<output class='border p-2' id="testi"></output>
+					<button type='button' class='btn btn-default border' id="kw_right">
+						<i class='fas fa-chevron-right'></i>
+					</button>
+				</div>
                 
             </div>
 
