@@ -20,7 +20,7 @@ html, body{
     height: 80%;
 }
 
-#tableOutput th, td {
+#tableOutput td {
     padding-top: 3px;
     padding-bottom: 3px;
 }
