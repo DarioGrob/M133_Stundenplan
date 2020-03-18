@@ -9,14 +9,24 @@
         <title>GIBM Stundenplan</title>
     </head>
     <body>
-        <div class="bg-secondary w-100 pt-3" id="titleArea">
-            <p class="display-2 text-light text-center">Stundenplan GIBM</p>
+        <div class="w-100" id="titleArea">
+		
+			<button type="button" id="openMenuBtn" class="btn mt-2 ml-2">
+				<i class="fas fa-ellipsis-h text-white"></i>
+			</button>
+			
+            <p class="display-2 text-light text-center font-weight-bold pb-3">Stundenplan GIBM</p>
+			
         </div>
 
-        <div class="d-flex flex-row w-100" id="content">
+        <div class="d-flex flex-row w-100 pl-5 pr-5" id="content">
             
-            <div class="ml-5 mt-5 mr-3 mr-0" id="selectionArea">
-
+            <div class="" id="selectionArea">
+				
+				<button type="button" id="closeMenuBtn" class="btn">
+					<i class="fas fa-times text-white"></i>
+				</button>
+				
                 <p class="mb-1">Berufsgurppe:</p>
 
                 <select class="custom-select" id="jobDropdown">
@@ -32,25 +42,29 @@
 				<p class='mt-5 mb-1' id="calenderWeekTitleHidden">Kalenderwoche:</p>
 				
 				<div class='d-flex flex-row ml-auto mr-auto' id="calenderWeekSelectionHidden">
-					<button type='button' class='btn btn-default border' id="kw_left">
+					<button type='button' class='btn border text-secondary' id="kw_left">
 						<i class='fas fa-chevron-left'></i>
 					</button>
 					<output class='border p-2' id="testi"></output>
-					<button type='button' class='btn btn-default border' id="kw_right">
+					<button type='button' class='btn border text-secondary' id="kw_right">
 						<i class='fas fa-chevron-right'></i>
 					</button>
 				</div>
-                
+                				
             </div>
 
-            <div class="float-right mt-5 mr-5" id="displayResultArea">
+            <div class="float-right mt-5 mr-5 ml-5" id="displayResultArea">
                 <table class="table table-bordered" id="tableOutput">
-                    
                 </table>
             </div>
 
         </div>
         <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-        <script src="main.js"></script>
+        <script type="text/javascript" src="responsiv.js"></script>
+		<script type="text/javascript" src="localStorage.js"></script>
+		<script type="text/javascript" src="ajax.js"></script>
+		<script type="text/javascript" src="main.js"></script>
+		<script type="text/javascript" src="events.js"></script>
+		
     </body>
 </html>
