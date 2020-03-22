@@ -1,6 +1,7 @@
 var tableTime = ['07:15 - 08:00', '08:05 - 08:50', '08:55 - 09:40', '10:00 - 10:45', '10:50 - 11:35', '12:45 - 13:30', '13:35 - 14:20', '14:40 - 15:25', '15:30 - 16:15', '16:20 - 17:05'];  
 var weekdays = ['Montag', 'Dienstag', 'Mitwoch', 'Donnerstag', 'Freitag'];
 var date = new Date();
+const dtf = new Intl.DateTimeFormat('en', { year: 'numeric', month: '2-digit', day: '2-digit' })
 var lessons;
 var week;
 
@@ -13,15 +14,38 @@ Date.prototype.getWeek = function() {
 	return Math.ceil((((this - onejan) / 86400000) + onejan.getDay()+1)/7);
 }
 
+Date.prototype.getFriday = function() {
+	var day = this.getDay();  
+	if( day !== 5 ) {
+		this.setHours(24 * (5 - day));
+	} 
+	return this;
+}
+	
+Date.prototype.getMonday = function() {
+	var day = this.getDay();  
+	if( day !== 1 ) {
+		this.setHours(-24 * (day - 1)); 
+	}
+	return this;
+}
+
+function dateFormatter(date){
+			
+	const [{ value: mo },,{ value: da },,{ value: ye }] = dtf.formatToParts(date);
+	return `${da}.${mo}.${ye}`;
+}
+
 function displayTable(){	
 	var indexOfTableTimeBisLesson;
 	var indexOfTableTimeVonLesson;
 	var indexOfWeekdayLesson;
 	var lessonsInfo = [];
 	
+	$("#displayResultArea").prepend('<p class="h2">' + dateFormatter(date.getMonday()) + ' - ' + dateFormatter(date.getFriday()) +'</p>');
 	if(lessons.length == 0){
 		$("#tableOutput").append('<p class="display-4 text-center">Kein Unterricht hinterlegt</p>');
-	}else{	
+	}else{
 		for(i = 0; i <= tableTime.length; i ++){
 			for(j = 0; j <= weekdays.length; j++){
 				if(isFirstCellInTable(j, i)){
@@ -66,7 +90,7 @@ function displayTable(){
 			}
 		}
 	}
-	$("#testi").html(week);		
+	$("#weekDisplay").html(week);		
 	$("#calenderWeekTitleHidden").css('visibility', 'visible');
 	$("#calenderWeekSelectionHidden").css('visibility', 'visible');
 

@@ -13,12 +13,14 @@ $(function(){
 	
 	$("#classDropdown").change(function(){
 		$("#tableOutput").empty();
+		$("#displayResultArea p").remove();
 		week = date.getWeek() + "-" + date.getFullYear();
 		getDataFromApi("http://sandbox.gibm.ch/tafel.php?klasse_id=" + $("#classDropdown :selected").val() + "&woche=" + week, "lessons");
 	});
 	
 	$("#kw_left").click(function (){
 		$("#tableOutput").empty();
+		$("#displayResultArea p").remove();
 		date.setDate(date.getDate() - 7); 
 		week = date.getWeek() + "-" + date.getFullYear();
 		getDataFromApi("http://sandbox.gibm.ch/tafel.php?klasse_id=" + $("#classDropdown :selected").val() + "&woche=" + week, "lessons");
@@ -26,6 +28,7 @@ $(function(){
 	
 	$("#kw_right").click(function (){
 		$("#tableOutput").empty();
+		$("#displayResultArea p").remove();
 		date.setDate(date.getDate() + 7);
 		week = date.getWeek() + "-" + date.getFullYear();
 		getDataFromApi("http://sandbox.gibm.ch/tafel.php?klasse_id=" + $("#classDropdown :selected").val() + "&woche=" + week, "lessons");
