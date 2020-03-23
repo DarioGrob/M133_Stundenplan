@@ -11,7 +11,7 @@ $(function(){
 	var localstorageJobId = localstorageGetJobId(); 
 	var localstorageClassId = localstorageGetClassId();
 
-	//Daten für den Dropdown auslesen und befüllen
+	//Daten für das job Dropdown auslesen und befüllen
 	getDataFromApi("http://sandbox.gibm.ch/berufe.php", "#jobDropdown", localstorageJobId);
 
 	//Falls ein Job im localStorage hinterlegt ist, die Klassen für den Beruf auslesen und anzeigen
@@ -85,9 +85,9 @@ function displayTable(){
 					//überpüfen ob in der Zelle eine Lektion beginnt
 					var lesson =  isStartOfLesson(j, i);
 					if(lesson){
-						//vom lektionsstart der tabellen index herausfinden
+						//vom lektionsstart den tabellen index herausfinden
 						indexOfTableTimeVonLesson = tableTime.findIndex(tableLesson => tableLesson.includes(lesson.tafel_von.substr(0, 5)));
-						//vom lektionsstart der tabellen index herausfinden
+						//vom lektionsende den tabellen index herausfinden
 						indexOfTableTimeBisLesson = tableTime.findIndex(tableLesson => tableLesson.includes(lesson.tafel_bis.substr(0, 5)));
 						indexOfWeekdayLesson = lesson.tafel_wochentag;
 						
@@ -99,7 +99,7 @@ function displayTable(){
 						};
 						
 						lessonsInfo.push(lessonInfo);
-						//nötiger rowspan der celle ermitteln
+						//nötiger rowspan der zelle ermitteln
 						var rowspan = indexOfTableTimeBisLesson - indexOfTableTimeVonLesson + 1;
 						//herausfinden das wievielte (zeilen) kind es ist 
 						var trRow1 = i + 1;

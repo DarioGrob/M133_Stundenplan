@@ -11,7 +11,7 @@ $(function(){
 		$("#selectionArea").removeClass();
 		//selectionArea nimmt ganzer bildschirm ein
 		$("#selectionArea").addClass("selectionAreaSmallDisplay");
-		//button zum schliessen des Menüs wird versteckt
+		//button zum schliessen des Menüs wird angezeigt
 		$("#closeMenuBtn").css('visibility', 'visible');
 	}
 	
