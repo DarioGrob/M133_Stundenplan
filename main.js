@@ -5,27 +5,34 @@ const dtf = new Intl.DateTimeFormat('en', { year: 'numeric', month: '2-digit', d
 var lessons;
 var week;
 
+//wird ausgeführt sobald Seite feritg geladen ist
 $(function(){
+	//Daten aus dem localStorage lesen
 	var localstorageJobId = localstorageGetJobId(); 
 	var localstorageClassId = localstorageGetClassId();
+
+	//Daten für den Dropdown auslesen und befüllen
 	getDataFromApi("http://sandbox.gibm.ch/berufe.php", "#jobDropdown", localstorageJobId);
 
+	//Falls ein Job im localStorage hinterlegt ist, die Klassen für den Beruf auslesen und anzeigen
 	if(localstorageJobId != null){
-		console.log($("#jobDropdown :selected").val());
 		getDataFromApi("http://sandbox.gibm.ch/klassen.php?beruf_id=" + localstorageJobId, "#classDropdown", localstorageClassId);
 	}
 
+	//Falls ein Job und Klasse im localStorage hinterlegt ist, Stundenplandaten auslesen und anzeigen
 	if(localstorageClassId != null && localstorageJobId != null){
 		week = date.getWeek() + "-" + date.getFullYear();
 		getDataFromApi("http://sandbox.gibm.ch/tafel.php?klasse_id=" + localstorageClassId + "&woche=" + week, "lessons", null);
 	}
 });
-
+//funktion zum Date Objekt hinzugefügt
+//gibt die Kalenderwoche zurück
 Date.prototype.getWeek = function() {
 	var onejan = new Date(this.getFullYear(),0,1);
 	return Math.ceil((((this - onejan) / 86400000) + onejan.getDay()+1)/7);
 }
-
+//funktion zum Date Objekt hinzugefügt
+//gibt den Freitag der Woche zurück 
 Date.prototype.getFriday = function() {
 	var day = this.getDay();  
 	if( day !== 5 ) {
@@ -33,7 +40,8 @@ Date.prototype.getFriday = function() {
 	} 
 	return this;
 }
-	
+//funktion zum Date Objekt hinzugefügt
+//gibt den Montag der Woche zurück
 Date.prototype.getMonday = function() {
 	var day = this.getDay();  
 	if( day !== 1 ) {
@@ -41,21 +49,23 @@ Date.prototype.getMonday = function() {
 	}
 	return this;
 }
-
+//gibt das Datum formatiert zurück -> format: dd.mm.yyyy
 function dateFormatter(date){
-			
 	const [{ value: mo },,{ value: da },,{ value: ye }] = dtf.formatToParts(date);
 	return `${da}.${mo}.${ye}`;
 }
 
+//erstellt die Stundenplantabelle
 function displayTable(){	
 	var indexOfTableTimeBisLesson;
 	var indexOfTableTimeVonLesson;
 	var indexOfWeekdayLesson;
 	var lessonsInfo = [];
 	
+	//Von bis Datum anzeigen des Stundenplans
 	$("#displayResultArea").prepend('<p class="h2">' + dateFormatter(date.getMonday()) + ' - ' + dateFormatter(date.getFriday()) +'</p>');
 	if(lessons.length == 0){
+		//Falls kein Unterricht hinterleg ist, dies dem User anzeigen
 		$("#tableOutput").append('<p class="display-4 text-center">Kein Unterricht hinterlegt</p>');
 	}else{
 		for(i = 0; i <= tableTime.length; i ++){
@@ -63,6 +73,7 @@ function displayTable(){
 				if(isFirstCellInTable(j, i)){
 					$("#tableOutput").append("<tr><td class='bg-light'></td></tr>");
 				}else if(isColumnHeader(i)){
+					//überprüfen ob an dem tag schule ist, um zu schauen ob header ausgeblendet werden kann bei kleinem bildschirm 
 					if(isSchoolDay(j)){
 						$("#tableOutput tr").append("<td class='bg-light text-secondary font-weight-bold'>" + weekdays[j - 1] + "</td>");
 					}else{
@@ -71,12 +82,16 @@ function displayTable(){
 				}else if(isRowHeader(j)){
 					$("#tableOutput").append("<tr><td class='bg-light text-secondary font-weight-bold'>" + tableTime[i - 1] + "</td></tr>");
 				}else{
+					//überpüfen ob in der Zelle eine Lektion beginnt
 					var lesson =  isStartOfLesson(j, i);
 					if(lesson){
-						indexOfTableTimeVonLesson = tableTime.findIndex(s => s.includes(lesson.tafel_von.substr(0, 5)));
-						indexOfTableTimeBisLesson = tableTime.findIndex(s => s.includes(lesson.tafel_bis.substr(0, 5)));
+						//vom lektionsstart der tabellen index herausfinden
+						indexOfTableTimeVonLesson = tableTime.findIndex(tableLesson => tableLesson.includes(lesson.tafel_von.substr(0, 5)));
+						//vom lektionsstart der tabellen index herausfinden
+						indexOfTableTimeBisLesson = tableTime.findIndex(tableLesson => tableLesson.includes(lesson.tafel_bis.substr(0, 5)));
 						indexOfWeekdayLesson = lesson.tafel_wochentag;
 						
+						//objekt der lektion erstellen mit startindex, endindex und wochentag
 						const lessonInfo = {
 							wochentag: indexOfWeekdayLesson,
 							vonIndex: indexOfTableTimeVonLesson,
@@ -84,13 +99,16 @@ function displayTable(){
 						};
 						
 						lessonsInfo.push(lessonInfo);
-						
+						//nötiger rowspan der celle ermitteln
 						var rowspan = indexOfTableTimeBisLesson - indexOfTableTimeVonLesson + 1;
+						//herausfinden das wievielte (zeilen) kind es ist 
 						var trRow1 = i + 1;
 						$("#tableOutput tr:nth-child(" + trRow1 + ")").append("<td rowspan='" + rowspan + "'><div class='lesson'>" + lesson.tafel_longfach + "</br>" + lesson.tafel_raum + "</br>" + lesson.tafel_lehrer + "</div></td>");
 					}else{
 						if(isBetweenLessonStartAndEnd(j, i)){
+							//herausfinden das wievielte (zeilen) kind es ist
 							var trRow2 = i + 1;
+							//überprüfen ob an dem tag schule ist, um zu schauen ob zelle ausgeblendet werden kann bei kleinem bildschirm
 							if(isSchoolDay(j)){
 								$("#tableOutput tr:nth-child(" + trRow2 + ")").append("<td></td>");
 							}else{
@@ -102,9 +120,13 @@ function displayTable(){
 			}
 		}
 	}
-	$("#weekDisplay").html(week);		
+	//Kalenderwoche anzeigen
+	$("#weekDisplay").html(week);
+	//button für das Wechseln zwischen verschiedenen wochen anzeigen		
 	$("#calenderWeekTitleHidden").css('visibility', 'visible');
 	$("#calenderWeekSelectionHidden").css('visibility', 'visible');
+
+	//Methoden für diverse überprüfungen welche beim erstellen der Tabelle benötigt werden -> übersichtlicher
 
 	function isFirstCellInTable(columnIndex, rowIndex){
 		if(columnIndex == 0 && rowIndex == 0){
