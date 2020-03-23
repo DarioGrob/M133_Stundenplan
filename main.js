@@ -8,17 +8,14 @@ var week;
 $(function(){
 	var localstorageJobId = localstorageGetJobId(); 
 	var localstorageClassId = localstorageGetClassId();
-	console.log("hallo")
 	getDataFromApi("http://sandbox.gibm.ch/berufe.php", "#jobDropdown", localstorageJobId);
 
 	if(localstorageJobId != null){
-		console.log(localstorageJobId);
 		console.log($("#jobDropdown :selected").val());
 		getDataFromApi("http://sandbox.gibm.ch/klassen.php?beruf_id=" + localstorageJobId, "#classDropdown", localstorageClassId);
 	}
 
 	if(localstorageClassId != null && localstorageJobId != null){
-		console.log(localstorageClassId);
 		week = date.getWeek() + "-" + date.getFullYear();
 		getDataFromApi("http://sandbox.gibm.ch/tafel.php?klasse_id=" + localstorageClassId + "&woche=" + week, "lessons", null);
 	}

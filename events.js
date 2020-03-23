@@ -14,6 +14,7 @@ $(function(){
 	$("#classDropdown").change(function(){
 		$("#tableOutput").empty();
 		$("#displayResultArea p").remove();
+		date = new Date();
 		week = date.getWeek() + "-" + date.getFullYear();
 		getDataFromApi("http://sandbox.gibm.ch/tafel.php?klasse_id=" + $("#classDropdown :selected").val() + "&woche=" + week, "lessons");
 	});
@@ -35,6 +36,8 @@ $(function(){
 	});
 	
 	$("#jobDropdown").change(function(){
+		$("#tableOutput").empty();
+		$("#displayResultArea p").remove();
 		getDataFromApi("http://sandbox.gibm.ch/klassen.php?beruf_id=" + $("#jobDropdown :selected").val(), "#classDropdown");		
 	});
 
