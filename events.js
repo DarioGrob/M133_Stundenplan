@@ -37,4 +37,16 @@ $(function(){
 	$("#jobDropdown").change(function(){
 		getDataFromApi("http://sandbox.gibm.ch/klassen.php?beruf_id=" + $("#jobDropdown :selected").val(), "#classDropdown");		
 	});
+
+	$(window).on('beforeunload', function(){
+		localStorage.clear();
+		var selectedJob = $("#jobDropdown :selected").val();
+		var selectedClass = $("#classDropdown :selected").val();
+		if(selectedJob != 'select'){
+			localstorageSetJobId(selectedJob);
+		}
+		if(selectedClass != 'select'){
+			localstorageSetClassId(selectedClass);
+		}
+	});
 });

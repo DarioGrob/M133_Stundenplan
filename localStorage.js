@@ -1,15 +1,15 @@
-function setJobId(){
-	
+function localstorageSetJobId(jobId){
+	localStorage.setItem("jobId", jobId);
 }
 
-function getJobId(){
-	
+function localstorageGetJobId(){
+	return localStorage.getItem("jobId");
 }
 
-function setClassId(){
-	
+function localstorageSetClassId(classId){
+	localStorage.setItem("classId", classId);
 }
 
-function getClassId(){
-	
+function localstorageGetClassId(){
+	return localStorage.getItem("classId");
 }
