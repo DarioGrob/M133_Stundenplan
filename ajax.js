@@ -19,7 +19,7 @@ function getDataFromApi (url, destination, localstorage){
 			//dropdown löschen
 			$(destination).empty();
 			//selektions aufforderung in dropdown hinzufügen
-			$(destination).append('<option value="select">Select...</option>');
+			$(destination).append('<option value="25">Select...</option>');
 			//dropdown optionen hinzufügen
 			$.each(jsonData, function(index, value){
 				$(destination).append('<option value="' + value[Object.keys(value)[0]] + '">' +  value[Object.keys(value)[1]] + '</option>');

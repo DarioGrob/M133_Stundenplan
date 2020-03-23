@@ -53,6 +53,10 @@ $("#jobDropdown").change(function(){
 	//anzeige der vorherigen Stundenplandaten werden gelöscht
 	$("#tableOutput").empty();
 	$("#displayResultArea p").remove();
+	console.log("test");
+	//Kalenderwoche anzeige verstecken
+	$("#calenderWeekTitleHidden").css('visibility', 'hidden');
+	$("#calenderWeekSelectionHidden").css('visibility', 'hidden');
 	//die verschieden klassen werden ausgelesen und das dropdown wird befüllt
 	getDataFromApi("http://sandbox.gibm.ch/klassen.php?beruf_id=" + $("#jobDropdown :selected").val(), "#classDropdown");		
 });
