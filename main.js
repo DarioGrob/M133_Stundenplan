@@ -1,5 +1,5 @@
 var tableTime = ['07:15 - 08:00', '08:05 - 08:50', '08:55 - 09:40', '10:00 - 10:45', '10:50 - 11:35', '12:45 - 13:30', '13:35 - 14:20', '14:40 - 15:25', '15:30 - 16:15', '16:20 - 17:05'];  
-var weekdays = ['Montag', 'Dienstag', 'Mitwoch', 'Donnerstag', 'Freitag'];
+var weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag'];
 var date = new Date();
 const dtf = new Intl.DateTimeFormat('en', { year: 'numeric', month: '2-digit', day: '2-digit' })
 var lessons;

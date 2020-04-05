@@ -23,7 +23,13 @@ $("#classDropdown").change(function(){
 	date = new Date();
 	week = date.getWeek() + "-" + date.getFullYear();
 	//stundenplandaten werden neu ausgelesen und tabelle zusammengebaut
-	getDataFromApi("http://sandbox.gibm.ch/tafel.php?klasse_id=" + $("#classDropdown :selected").val() + "&woche=" + week, "lessons");
+	if($("#classDropdown :selected").val() != 25){
+		getDataFromApi("http://sandbox.gibm.ch/tafel.php?klasse_id=" + $("#classDropdown :selected").val() + "&woche=" + week, "lessons");
+	}else{
+		//Kalenderwoche anzeige verstecken
+		$("#calenderWeekTitleHidden").css('visibility', 'hidden');
+		$("#calenderWeekSelectionHidden").css('visibility', 'hidden');
+	}
 });
 
 $("#kw_left").click(function (){
@@ -53,7 +59,6 @@ $("#jobDropdown").change(function(){
 	//anzeige der vorherigen Stundenplandaten werden gelöscht
 	$("#tableOutput").empty();
 	$("#displayResultArea p").remove();
-	console.log("test");
 	//Kalenderwoche anzeige verstecken
 	$("#calenderWeekTitleHidden").css('visibility', 'hidden');
 	$("#calenderWeekSelectionHidden").css('visibility', 'hidden');
@@ -69,10 +74,10 @@ $(window).on('beforeunload', function(){
 	var selectedJob = $("#jobDropdown :selected").val();
 	var selectedClass = $("#classDropdown :selected").val();
 	//falls es nicht die aufforderung zum selektieren eines jobs oder klasse ist, wird es in den localStorage geschrieben
-	if(selectedJob != 'select'){
+	if(selectedJob != 25){
 		localstorageSetJobId(selectedJob);
 	}
-	if(selectedClass != 'select'){
+	if(selectedClass != 25){
 		localstorageSetClassId(selectedClass);
 	}
 });
